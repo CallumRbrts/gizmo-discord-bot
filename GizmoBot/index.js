@@ -8,7 +8,7 @@ const Keyv = require('keyv');
 const keyvPrefixes = new Keyv('mysql://hart:Ilovemydog@localhost/gizmo');
 const keyvUsers = new Keyv('mysql://hart:Ilovemydog@localhost/gizmo');
 const dir = './images/characters';
-const VERSION = '1.2.2';
+const VERSION = '1.2.3';
 var {globalPrefix, token} = require('./config.json');
 var crypto = require('./functions/crypto.js');
 var imagePop = require('./functions/imagePop.js');
@@ -41,7 +41,13 @@ fs.readdir(dir, (err, files)=>{
 function fillCollection(){
 	for(const file of FILEDIRS){
 		let h = file.split('.');
-		FILECOLLECTION[file] = h[0].charAt(0).toUpperCase() + h[0].slice(1);
+		let j = "";
+		for(let i = 0; i < h.length - 1; i++){
+			j += h[i].charAt(0).toUpperCase() + h[i].slice(1).toLowerCase() + " ";
+		}
+		j = j.substring(0, j.length - 1);
+		FILECOLLECTION[file] = j;
+	//	FILECOLLECTION[file] = h[0].charAt(0).toUpperCase() + h[0].slice(1);
 	}
 }
 

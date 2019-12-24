@@ -3,6 +3,7 @@ module.exports = {
   name: 'get',
   description: 'Guess the character that spawned',
   async execute(message, args, guildImage, FILECOLLECTION){
+    console.log(FILECOLLECTION[guildImage]);
     if(guildImage === ""){
       message.channel.send('A character hasn\'t spawned yet');
     }else{
