@@ -9,6 +9,7 @@
   "author": "Hart",
   "license": "ISC",
   "dependencies": {
-    "discord.js": "^11.5.1"
+    "discord.js": "^11.5.1",
+    "keyv": "^4.0.0"
   }
 }
