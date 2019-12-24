@@ -92,7 +92,7 @@ function commandSwitch(message, args, version, prefix, currImage, guild){
             break;
 					case 'get':
 					  let bool =	chosenCommand.execute(message, args, guildsLatestImage[guild], FILECOLLECTION);
-						if(bool){
+						if(bool === true){
 							guildsLatestImage[guild] = "";
 						}
 						break;

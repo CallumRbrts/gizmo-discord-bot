@@ -4,16 +4,23 @@ module.exports = {
   description: 'Guess the character that spawned',
   async execute(message, args, guildImage, FILECOLLECTION){
     if(guildImage === ""){
-      message.channel.send('A character hasn\'t spawned yet')
+      message.channel.send('A character hasn\'t spawned yet');
     }else{
-    let guess = args[1].toLowerCase()+'.png';
-    if(guess === guildImage){
-      let charName = args[1].charAt(0).toUpperCase() + args[1].slice(1);
-      message.reply(' you have successfully caught ' + charName)
+    let charName = "";
+    for(let i = 1; i < args.length; i++){
+      charName += args[i].charAt(0).toUpperCase() + args[i].slice(1).toLowerCase() + " ";
+    }
+    charName = charName.substring(0, charName.length - 1);
+    console.log(charName);
+  //  charName = args[1].charAt(0).toUpperCase() + args[1].slice(1);
+    if(FILECOLLECTION[guildImage] === charName){
+      message.reply(' you have successfully caught ' + charName);
       return true;
     }else{
-      message.channel.send('Wrong Answer!')
+      message.channel.send('Wrong Answer!');
+      return false;
     }
    }
+   return false;
   }
 }
