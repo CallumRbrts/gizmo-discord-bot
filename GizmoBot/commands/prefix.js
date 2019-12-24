@@ -3,6 +3,7 @@ const onlySpecialCharsRegex = /[^a-zA-Z0-9]+$/;
 module.exports = {
   name: 'prefix',
   description: 'Change the prefix',
+  guildOnly: true,
   async execute(message, args, PREFIX, keyvPrefixes) {
       if(!args[1]){
        // message.channel.send('Prefix is currently "' + PREFIX + '"');
