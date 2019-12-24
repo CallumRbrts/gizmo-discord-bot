@@ -7,8 +7,9 @@ const fs = require('fs');
 const Keyv = require('keyv');
 const keyvPrefixes = new Keyv('mysql://hart:Ilovemydog@localhost/gizmo');
 const dir = './images/characters';
-const VERSION = '1.1.0';
-var {PREFIX, token} = require('./config.json');
+const VERSION = '1.2.1';
+var {globalPrefix, token} = require('./config.json');
+//const globalPrefix = PREFIX;
 var crypto = require('./crypto.js');
 var CHANCE = 1; //0.09 is the optimal
 var NBFILES;
@@ -38,13 +39,14 @@ bot.on('ready', () => {
 	bot.user.setPresence({
 		status: "online",
 		game: {
-			name: PREFIX + "help",
+			name: globalPrefix + "help",
 			type: "PLAYING"
 		}
 	})
 });
 
-function imagePop(message){
+//OPTIMIZATIONS : ADD THIS IN SEPERATE FILE + CHECK IF YOU CAN @ THE BOT TO DO COMMANDS
+function imagePop(message, prefix){
 	let pop = Math.random();
 	//chance to send a random image of a game character
 	if(pop < CHANCE){
@@ -59,43 +61,15 @@ function imagePop(message){
 			.setColor('#3880ba')
 			.setTitle('New character has been discovered!')
 			.attachFiles([dir+'/'+FILEDIRS[imageNumber]])
-			.setDescription('Type '+PREFIX+'get <character> to guess the \n character\'s name!' )
+			.setDescription('Type '+prefix+'get <character> to guess the \n character\'s name!' )
 			.setImage('attachment://'+FILEDIRS[imageNumber]);
 		message.channel.send(embed);
 		return;
 	}
 }
 
-bot.on('message', async message=>{
-  if(message.author.bot){
-    return;
-  }
-	let args;
-
-	if(message.guild){
-		let prefix;
-		if(!await keyvPrefixes.get(message.guild.id)){
-			prefix = PREFIX;
-		} else {
-			const guildPrefix = await keyvPrefixes.get(message.guild.id);
-			if(message.content.startsWith(guildPrefix)){
-				prefix = guildPrefix;
-				PREFIX = prefix;
-			}
-		}
-		//Consider getting rid of this so I don't have a disgusting code duplication
-		// if(!prefix){
-	  //   return imagePop(message);
-		// }
-		if(prefix){
-			args = message.content.substring(prefix.length).split(/\s+/);
-		}
-
-	}else{
-		args = message.content.substring(PREFIX.length).split(/\s+/);
-	}
-
-	if (message.content.substring(0, PREFIX.length) == PREFIX){
+function commandSwitch(message, args, version, prefix){
+	if (message.content.substring(0, prefix.length) == prefix){
   //args = message.content.substring(PREFIX.length).split(/\s+/);
     let command = args[0].toLowerCase();
 
@@ -107,10 +81,10 @@ bot.on('message', async message=>{
         //for commands with extra attributes needed in the prototypes or returning results are seperated
         switch(command){
           case 'info':
-            chosenCommand.execute(message, args, VERSION);
+            chosenCommand.execute(message, args, version);
             break;
           case 'prefix':
-            chosenCommand.execute(message, args, PREFIX, keyvPrefixes);
+            chosenCommand.execute(message, args, prefix, keyvPrefixes);
             break;
           default:
             chosenCommand.execute(message, args);
@@ -120,6 +94,36 @@ bot.on('message', async message=>{
     }
 	}else{
 		//need to call this function again so that the images may still spawn even when the server prefix hasn't changed
-		return imagePop(message);
+		return imagePop(message, prefix);
+	}
+}
+
+bot.on('message', async message=>{
+  if(message.author.bot){
+    return;
+  }
+	let args;
+	if(message.guild){
+		let guildPrefix;
+		if(!await keyvPrefixes.get(message.guild.id)){
+			guildPrefix = globalPrefix;
+			args = message.content.substring(guildPrefix.length).split(/\s+/);
+			console.log('No save');
+			commandSwitch(message, args, VERSION, guildPrefix);
+			return;
+		} else {
+			guildPrefix = await keyvPrefixes.get(message.guild.id);
+			if(message.content.startsWith(guildPrefix)){
+				args = message.content.substring(guildPrefix.length).split(/\s+/);
+				console.log('save');
+				commandSwitch(message, args, VERSION, guildPrefix);
+			} else {
+				imagePop(message, guildPrefix);
+				return;
+			}
+		}
+	}else{
+		args = message.content.substring(globalPrefix.length).split(/\s+/);
+		commandSwitch(message, args, VERSION, globalPrefix);
 	}
 });
