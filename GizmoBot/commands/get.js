@@ -15,7 +15,7 @@ module.exports = {
     console.log(charName);
   //  charName = args[1].charAt(0).toUpperCase() + args[1].slice(1);
     if(FILECOLLECTION[guildImage] === charName){
-      message.reply(' you have successfully caught ' + charName);
+      message.channel.send(message.author.toString() + ' has have successfully caught ' + charName);
       return true;
     }else{
       message.channel.send('Wrong Answer!');
