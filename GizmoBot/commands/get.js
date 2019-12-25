@@ -2,8 +2,8 @@
 module.exports = {
   name: 'get',
   description: 'Guess the character that spawned',
+  guildOnly: true,
   async execute(message, args, guildImage, FILECOLLECTION){
-    console.log(FILECOLLECTION[guildImage]);
     if(guildImage === ""){
       message.channel.send('A character hasn\'t spawned yet');
     }else{
@@ -12,8 +12,6 @@ module.exports = {
       charName += args[i].charAt(0).toUpperCase() + args[i].slice(1).toLowerCase() + " ";
     }
     charName = charName.substring(0, charName.length - 1);
-    console.log(charName);
-  //  charName = args[1].charAt(0).toUpperCase() + args[1].slice(1);
     if(FILECOLLECTION[guildImage] === charName){
       message.channel.send(message.author.toString() + ' has have successfully caught ' + charName);
       return true;

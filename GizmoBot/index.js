@@ -58,6 +58,7 @@ function fillCollection(){
 //CREATE A COMMAND SWITCH DM FUNCTION THAT HAS SEPERATE COMMANDS
 //Create a hint command that allows the user to get the first letter if that chars name
 //modify the get.js to make it search through the FILECOLLECTION to determine the answer, maybe it's not faster... actually no it will since it's a collection and not an array (indexing)
+//encrypt data that's saved in the database
 
 bot.login(token);
 
