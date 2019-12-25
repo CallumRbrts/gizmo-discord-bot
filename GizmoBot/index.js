@@ -8,7 +8,7 @@ const Keyv = require('keyv');
 const keyvPrefixes = new Keyv('mysql://hart:Ilovemydog@localhost/gizmo');
 const keyvUsers = new Keyv('mysql://hart:Ilovemydog@localhost/gizmo');
 const dir = './images/characters';
-const VERSION = '1.2.4';
+const VERSION = '1.2.5';
 var {globalPrefix, token} = require('./config.json');
 var crypto = require('./functions/crypto.js');
 var imagePop = require('./functions/imagePop.js');
@@ -47,7 +47,6 @@ function fillCollection(){
 		}
 		j = j.substring(0, j.length - 1);
 		FILECOLLECTION[file] = j;
-	//	FILECOLLECTION[file] = h[0].charAt(0).toUpperCase() + h[0].slice(1);
 	}
 }
 
@@ -57,31 +56,30 @@ function fillCollection(){
 //add the ability to add chars to a users database
 //CREATE A COMMAND SWITCH DM FUNCTION THAT HAS SEPERATE COMMANDS
 //Create a hint command that allows the user to get the first letter if that chars name
-//modify the get.js to make it search through the FILECOLLECTION to determine the answer, maybe it's not faster... actually no it will since it's a collection and not an array (indexing)
 //encrypt data that's saved in the database
 
 bot.login(token);
 
 bot.on('ready', () => {
   console.log('This bot is online!');
-	bot.user.setPresence({
-		status: "online",
-		game: {
-			name: globalPrefix + "help",
-			type: "PLAYING"
-		}
-	});
 	fillCollection();
 	console.log(FILECOLLECTION);
     allGuilds.tap(function(guild){
 			guildsLatestImage[guild.id] = "";
     });
 	console.log(guildsLatestImage);
+	bot.user.setPresence({
+		status: "online",
+		game: {
+			name: "over " + bot.guilds.size + " servers | " + globalPrefix + "help",
+			type: "WATCHING"
+		}
+	});
 });
 
-function commandSwitch(message, args, version, prefix, currImage, guild){
+function commandSwitch(message, args, prefix, currImage, guild){
+	let type = message.channel.type;
 	if (message.content.substring(0, prefix.length) == prefix){
-  //args = message.content.substring(PREFIX.length).split(/\s+/);
     let command = args[0].toLowerCase();
 
     //checks collection for the command, if found then proceed
@@ -92,15 +90,21 @@ function commandSwitch(message, args, version, prefix, currImage, guild){
         //for commands with extra attributes needed in the prototypes or returning results are seperated
         switch(command){
           case 'info':
-            chosenCommand.execute(message, args, version);
+            chosenCommand.execute(message, args, VERSION);
             break;
           case 'prefix':
-            chosenCommand.execute(message, args, prefix, keyvPrefixes);
+						if(type != "dm"){
+            	chosenCommand.execute(message, args, prefix, keyvPrefixes);
+					  }else {
+					  	message.channel.send('Can\'t do that in DM\'s!');
+					  }
             break;
 					case 'get':
-					  let bool =	chosenCommand.execute(message, args, guildsLatestImage[guild], FILECOLLECTION);
-						if(bool === true){
-							guildsLatestImage[guild] = "";
+						if(type != "dm"){
+					  	let bool =	chosenCommand.execute(message, args, guildsLatestImage[guild], FILECOLLECTION);
+							if(bool === true){
+								guildsLatestImage[guild] = "";
+							}
 						}
 						break;
           default:
@@ -111,9 +115,11 @@ function commandSwitch(message, args, version, prefix, currImage, guild){
     }
 	}else{
 		//need to call this function again so that the images may still spawn even when the server prefix hasn't changed
-		let currImage = imagePop.spawnImage(message, prefix, CHANCE, FILEDIRS, NBFILES, dir);
-		guildsLatestImage[message.guild.id] = currImage;
-		console.log(guildsLatestImage);
+		if(type != "dm"){
+			let currImage = imagePop.spawnImage(message, prefix, CHANCE, FILEDIRS, NBFILES, dir);
+			guildsLatestImage[message.guild.id] = currImage;
+			console.log(guildsLatestImage);
+		}
 		return;
 	}
 }
@@ -123,21 +129,25 @@ bot.on('message', async message=>{
     return;
   }
 	let args;
+	//if message was sent in a guild
 	if(message.guild){
 		let guildPrefix;
 		let currImage;
 		let guildID = message.guild.id;
+		//if we don't have the guild prefix stored
 		if(!await keyvPrefixes.get(guildID)){
 			guildPrefix = globalPrefix;
 			args = message.content.substring(guildPrefix.length).split(/\s+/);
-		  commandSwitch(message, args, VERSION, guildPrefix, currImage, guildID);
+		  commandSwitch(message, args, guildPrefix, currImage, guildID);
 			return;
 		} else {
+			//get the guild prefix
 			guildPrefix = await keyvPrefixes.get(guildID);
 			if(message.content.startsWith(guildPrefix)){
 				args = message.content.substring(guildPrefix.length).split(/\s+/);
-				commandSwitch(message, args, VERSION, guildPrefix, currImage, guildID);
+				commandSwitch(message, args, guildPrefix, currImage, guildID);
 			} else {
+				//if guild message but no prefix
 			  let currImage = imagePop.spawnImage(message, guildPrefix, CHANCE, FILEDIRS, NBFILES, dir);
 				guildsLatestImage[guildID] = currImage;
 				console.log(guildsLatestImage);
@@ -145,9 +155,8 @@ bot.on('message', async message=>{
 			}
 		}
 	}else{
-		//DM's -> NEED TO MODIFY TO MAKE IT SO IMAGES DON'T SPAWN IN DM'S
-		//CREATE A COMMAND SWITCH DM FUNCTION THAT HAS SEPERATE COMMANDS
+		//DM's
 		args = message.content.substring(globalPrefix.length).split(/\s+/);
-		commandSwitch(message, args, VERSION, globalPrefix, null , null);
+		commandSwitch(message, args, globalPrefix, null , null);
 	}
 });
