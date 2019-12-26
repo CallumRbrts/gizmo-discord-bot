@@ -18,6 +18,7 @@ var FILEDIRS = [];
 var FILECOLLECTION = {};
 var guildsLatestImage = {};
 var allGuilds = bot.guilds;
+var guildTimers = {};
 
 
 keyvPrefixes.on('error', err => console.error('Keyv connection error:', err));
@@ -50,7 +51,6 @@ function fillCollection(){
 	}
 }
 
-//modify bot to send error message when DM guild only commands
 //optimize the prefix again using Keyv in conjunction with allGuilds.tap();
 //add a time limit to when you can catch the character
 //add the ability to add chars to a users database
@@ -102,8 +102,9 @@ function commandSwitch(message, args, prefix, currImage, guild){
 					case 'get':
 						if(type != "dm"){
 					  	let bool =	chosenCommand.execute(message, args, guildsLatestImage[guild], FILECOLLECTION);
-							if(bool === true){
+							if(bool){
 								guildsLatestImage[guild] = "";
+								clearTimeout(guildTimers[guild]);
 							}
 						}
 						break;
@@ -133,6 +134,7 @@ bot.on('message', async message=>{
 	if(message.guild){
 		let guildPrefix;
 		let currImage;
+		let timer;
 		let guildID = message.guild.id;
 		//if we don't have the guild prefix stored
 		if(!await keyvPrefixes.get(guildID)){
@@ -150,6 +152,17 @@ bot.on('message', async message=>{
 				//if guild message but no prefix
 			  let currImage = imagePop.spawnImage(message, guildPrefix, CHANCE, FILEDIRS, NBFILES, dir);
 				guildsLatestImage[guildID] = currImage;
+				if(guildsLatestImage[guildID] != ""){
+					clearTimeout(guildTimers[guildID]);
+					console.log('timer cleared');
+				}
+				//was trying to set a timer by creating a collection of timers for each guild and accessing them periodically to reset each timer
+				timer = setTimeout(() => {
+					if(guildsLatestImage[guildID]!= ""){
+					guildsLatestImage[guildID] = "";
+					}
+				}, 10000);
+				guildTimers[guildID] = timer;
 				console.log(guildsLatestImage);
 				return;
 			}
