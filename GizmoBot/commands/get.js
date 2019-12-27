@@ -3,7 +3,7 @@ module.exports = {
   name: 'get',
   description: 'Guess the character that spawned',
   guildOnly: true,
-  async execute(message, args, guildImage, FILECOLLECTION){
+  async execute(message, args, guildImage, FILECOLLECTION, keyvUsers){
     if(guildImage === ""){
       message.channel.send('A character hasn\'t spawned yet');
     }else{
@@ -14,6 +14,15 @@ module.exports = {
     charName = charName.substring(0, charName.length - 1);
     if(FILECOLLECTION[guildImage] === charName){
       message.channel.send(message.author.toString() + ' has have successfully caught ' + charName);
+      let results = new Array();
+      let userID = message.member.user.tag;
+      results = await keyvUsers.get(userID);
+      results.push(charName);
+      await keyvUsers.set(userID, results);
+      console.log(results);
+
+      // list = await keyvUsers.get(userID);
+      // message.channel.send('List of '+userID+'\'s chars: \n' + list);
       return true;
     }else{
       message.channel.send('Wrong Answer!');

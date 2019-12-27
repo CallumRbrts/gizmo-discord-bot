@@ -8,7 +8,7 @@ const Keyv = require('keyv');
 const keyvPrefixes = new Keyv('mysql://hart:Ilovemydog@localhost/gizmo');
 const keyvUsers = new Keyv('mysql://hart:Ilovemydog@localhost/gizmo');
 const dir = './images/characters';
-const VERSION = '1.2.5';
+const VERSION = '1.2.6';
 var {globalPrefix, token} = require('./config.json');
 var crypto = require('./functions/crypto.js');
 var imagePop = require('./functions/imagePop.js');
@@ -19,7 +19,6 @@ var FILECOLLECTION = {};
 var guildsLatestImage = {};
 var allGuilds = bot.guilds;
 var guildTimers = {};
-
 
 keyvPrefixes.on('error', err => console.error('Keyv connection error:', err));
 keyvUsers.on('error', err => console.error('Keyv connection error:', err));
@@ -52,12 +51,15 @@ function fillCollection(){
 }
 
 //optimize the prefix again using Keyv in conjunction with allGuilds.tap();
-//add a time limit to when you can catch the character
 //add the ability to add chars to a users database
-//CREATE A COMMAND SWITCH DM FUNCTION THAT HAS SEPERATE COMMANDS
 //Create a hint command that allows the user to get the first letter if that chars name
 //encrypt data that's saved in the database
-
+//turn image into an object so that we can store captured character level. For now only stores the image, I want to store a datastructure
+//xp system for each char
+//music bot = YT and Sportify capabilities
+//write a add, delete and list char commands -> next one
+//set limit to amount of chars on one single embed and seperate them into pages and allow page change through reactions
+//add the ability to sort the list of captured characters
 bot.login(token);
 
 bot.on('ready', () => {
@@ -78,7 +80,6 @@ bot.on('ready', () => {
 });
 
 function commandSwitch(message, args, prefix, currImage, guild){
-	let type = message.channel.type;
 	if (message.content.substring(0, prefix.length) == prefix){
     let command = args[0].toLowerCase();
 
@@ -93,20 +94,23 @@ function commandSwitch(message, args, prefix, currImage, guild){
             chosenCommand.execute(message, args, VERSION);
             break;
           case 'prefix':
-						if(type != "dm"){
+						if(message.channel.type != "dm"){
             	chosenCommand.execute(message, args, prefix, keyvPrefixes);
 					  }else {
 					  	message.channel.send('Can\'t do that in DM\'s!');
 					  }
             break;
 					case 'get':
-						if(type != "dm"){
-					  	let bool =	chosenCommand.execute(message, args, guildsLatestImage[guild], FILECOLLECTION);
+						if(message.channel.type != "dm"){
+					  	let bool =	chosenCommand.execute(message, args, guildsLatestImage[guild], FILECOLLECTION, keyvUsers, message.member.user.tag);
 							if(bool){
 								guildsLatestImage[guild] = "";
 								clearTimeout(guildTimers[guild]);
 							}
 						}
+						break;
+					case 'lc':
+						chosenCommand.execute(message, args, keyvUsers);
 						break;
           default:
             chosenCommand.execute(message, args);
@@ -116,7 +120,7 @@ function commandSwitch(message, args, prefix, currImage, guild){
     }
 	}else{
 		//need to call this function again so that the images may still spawn even when the server prefix hasn't changed
-		if(type != "dm"){
+		if(message.channel.type != "dm"){
 			let currImage = imagePop.spawnImage(message, prefix, CHANCE, FILEDIRS, NBFILES, dir);
 			guildsLatestImage[message.guild.id] = currImage;
 			console.log(guildsLatestImage);
