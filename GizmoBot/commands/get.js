@@ -15,8 +15,11 @@ module.exports = {
     if(FILECOLLECTION[guildImage] === charName){
       message.channel.send(message.author.toString() + ' has have successfully caught ' + charName);
       let results = new Array();
-      let userID = message.member.user.tag;
+      let userID = message.member.user.id;
       results = await keyvUsers.get(userID);
+      if(!results){
+        results = new Array();
+      }
       results.push(charName);
       await keyvUsers.set(userID, results);
       console.log(results);

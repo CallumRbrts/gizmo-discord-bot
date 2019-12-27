@@ -57,9 +57,11 @@ function fillCollection(){
 //turn image into an object so that we can store captured character level. For now only stores the image, I want to store a datastructure
 //xp system for each char
 //music bot = YT and Sportify capabilities
-//write a add, delete and list char commands -> next one
+//write a delete char commands -> next one
 //set limit to amount of chars on one single embed and seperate them into pages and allow page change through reactions
 //add the ability to sort the list of captured characters
+//delete the user table with my tag in the database -> cleanup
+
 bot.login(token);
 
 bot.on('ready', () => {
@@ -102,7 +104,7 @@ function commandSwitch(message, args, prefix, currImage, guild){
             break;
 					case 'get':
 						if(message.channel.type != "dm"){
-					  	let bool =	chosenCommand.execute(message, args, guildsLatestImage[guild], FILECOLLECTION, keyvUsers, message.member.user.tag);
+					  	let bool =	chosenCommand.execute(message, args, guildsLatestImage[guild], FILECOLLECTION, keyvUsers);
 							if(bool){
 								guildsLatestImage[guild] = "";
 								clearTimeout(guildTimers[guild]);
@@ -110,7 +112,7 @@ function commandSwitch(message, args, prefix, currImage, guild){
 						}
 						break;
 					case 'lc':
-						chosenCommand.execute(message, args, keyvUsers);
+						chosenCommand.execute(message, args, keyvUsers, prefix);
 						break;
           default:
             chosenCommand.execute(message, args);
