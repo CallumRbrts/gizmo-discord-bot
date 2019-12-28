@@ -54,13 +54,14 @@ function fillCollection(){
 //add the ability to add chars to a users database
 //Create a hint command that allows the user to get the first letter if that chars name
 //encrypt data that's saved in the database
-//turn image into an object so that we can store captured character level. For now only stores the image, I want to store a datastructure
+//NEXT!!!//turn image into an object so that we can store captured character level. For now only stores the image, I want to store a datastructure
 //xp system for each char
 //music bot = YT and Sportify capabilities
 //write a delete char commands -> next one
 //set limit to amount of chars on one single embed and seperate them into pages and allow page change through reactions
 //add the ability to sort the list of captured characters
 //delete the user table with my tag in the database -> cleanup
+
 
 bot.login(token);
 
@@ -111,8 +112,9 @@ function commandSwitch(message, args, prefix, currImage, guild){
 							}
 						}
 						break;
+					case 'delc':
 					case 'lc':
-						chosenCommand.execute(message, args, keyvUsers, prefix);
+						chosenCommand.execute(message, args, keyvUsers, prefix, bot);
 						break;
           default:
             chosenCommand.execute(message, args);
