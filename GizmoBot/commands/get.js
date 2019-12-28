@@ -6,7 +6,7 @@ module.exports = {
   guildOnly: true,
   async execute(message, args, guildImage, FILECOLLECTION, keyvUsers){
     if(guildImage === ""){
-      message.channel.send('A character hasn\'t spawned yet');
+     return message.channel.send('A character hasn\'t spawned yet');
     }else{
     let charName = "";
     for(let i = 1; i < args.length; i++){
@@ -22,10 +22,16 @@ module.exports = {
       if(!results){
         results = new Array();
       }
+      let today = new Date();
+      let date = today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear();
+      let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+      let dateTime = date+' '+time;
       let obj = {
         name:charName,
-        imageURL:guildImage
+        imageURL:guildImage,
+        dateCaptured:dateTime
       }
+      console.log(obj.dateCaptured);
       results.push(obj);
       await keyvUsers.set(userID, results);
       console.log(results);

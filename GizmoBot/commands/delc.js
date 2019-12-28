@@ -4,25 +4,34 @@ module.exports = {
   name: 'delc',
   description: 'Delete a character from your character list',
   async execute(message, args, keyvUsers, prefix) {
+    //gets id of message sender
     let userID = message.member.user.id;
+    //converts the argument to a number
     args[1] = Number(args[1]);
     if(args[1] == null || isNaN(args[1])){
-      message.channel.send(message.author.toString() + ' please specify a character position you want to delete');
+      return message.channel.send(message.author.toString() + ' please specify a character position you want to delete');
     }else{
+      //gets user from database
       var res = await keyvUsers.get(userID);
+      if(!res){
+        return message.channel.send(message.author.toString() + ' you have no characters to delete!');
+      }
       if(args[1]-1 > res.size){
-        message.channel.send(message.author.toString() + ' you need to chose a valid character to delete');
+        return message.channel.send(message.author.toString() + ' you need to chose a valid character to delete');
       }else{
-        //timer to do it with a "Are you sure?"
+        //shifts index because the user choses a character from a display list starting at 1
         let index = args[1]-1;
+        //use splice to delete the specified argument from list and place it in a new array
         let del = res.splice(index, 1);
-        message.channel.send(message.author.toString() + ' are you sure you want to delete ' + del+'? !accept or !deny');
+        message.channel.send(message.author.toString() + ' are you sure you want to delete ' + del[0].name+'? !accept or !deny');
+        //waits 10 seconds for users answer
         const collector = new Discord.MessageCollector(message.channel, m => m.author.id === message.author.id, {time:10000});
         collector.on('collect', async function(message){
           if(message.content.toLowerCase() == prefix+"accept"){
+            //sets the new deleted list
             await keyvUsers.set(userID, res);
             console.log(res);
-            message.channel.send('Character successfully deleted '+del[0]+'!');
+            return message.channel.send('Character successfully deleted '+del[0].name+'!');
           }else if(message.content.toLowerCase() == prefix+"deny"){
             message.channel.send('Aborted!');
             return;
