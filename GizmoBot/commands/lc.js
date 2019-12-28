@@ -20,7 +20,6 @@ module.exports = {
     if(!res){
       return message.channel.send(message.author.toString()+' this user hasn\'t captured anything yet')
     }
-    //add error if they haven't got anything
     if(res.length==0){
       return message.channel.send(message.author.toString()+' you do not have any characters to show!')
     }
@@ -31,7 +30,7 @@ module.exports = {
       .setAuthor(currentUser.tag ,currentUser.avatarURL)
       .setTitle('Your game characters:');
     for(let i = 0; i < res.length; i++){
-      msg += i+1 +'. **'+ res[i] + '**\n';
+      msg += i+1 +'. **'+ res[i].name + '**\n';
       //  embed.addField(name='**'+res[i]+'**',value="\u200b");
       }
     embed.addField("Sorted by : nothing rn",msg);

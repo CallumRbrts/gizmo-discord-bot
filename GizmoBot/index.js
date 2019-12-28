@@ -1,10 +1,8 @@
 const Discord = require('discord.js');
 const bot = new Discord.Client();
 bot.commands = new Discord.Collection();
-
 const fs = require('fs');
 const Keyv = require('keyv');
-
 const keyvPrefixes = new Keyv('mysql://hart:Ilovemydog@localhost/gizmo');
 const keyvUsers = new Keyv('mysql://hart:Ilovemydog@localhost/gizmo');
 const dir = './images/characters';
@@ -56,11 +54,11 @@ function fillCollection(){
 //encrypt data that's saved in the database
 //NEXT!!!//turn image into an object so that we can store captured character level. For now only stores the image, I want to store a datastructure
 //xp system for each char
-//music bot = YT and Sportify capabilities
-//write a delete char commands -> next one
+//music bot = YT and Spotify capabilities
 //set limit to amount of chars on one single embed and seperate them into pages and allow page change through reactions
 //add the ability to sort the list of captured characters
 //delete the user table with my tag in the database -> cleanup
+//add the ability to select a character from the list of user chars and display information
 
 
 bot.login(token);

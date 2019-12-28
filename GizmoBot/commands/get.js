@@ -1,3 +1,4 @@
+const character = require('../objects/character.js');
 
 module.exports = {
   name: 'get',
@@ -13,6 +14,7 @@ module.exports = {
     }
     charName = charName.substring(0, charName.length - 1);
     if(FILECOLLECTION[guildImage] === charName){
+
       message.channel.send(message.author.toString() + ' has have successfully caught ' + charName);
       let results = new Array();
       let userID = message.member.user.id;
@@ -20,7 +22,11 @@ module.exports = {
       if(!results){
         results = new Array();
       }
-      results.push(charName);
+      let obj = {
+        name:charName,
+        imageURL:guildImage
+      }
+      results.push(obj);
       await keyvUsers.set(userID, results);
       console.log(results);
 
