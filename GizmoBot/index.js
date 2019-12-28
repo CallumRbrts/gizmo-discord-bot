@@ -49,10 +49,8 @@ function fillCollection(){
 }
 
 //optimize the prefix again using Keyv in conjunction with allGuilds.tap();
-//add the ability to add chars to a users database
 //Create a hint command that allows the user to get the first letter if that chars name
 //encrypt data that's saved in the database
-//NEXT!!!//turn image into an object so that we can store captured character level. For now only stores the image, I want to store a datastructure
 //xp system for each char
 //music bot = YT and Spotify capabilities
 //set limit to amount of chars on one single embed and seperate them into pages and allow page change through reactions
@@ -101,6 +99,7 @@ function commandSwitch(message, args, prefix, currImage, guild){
 					  	message.channel.send('Can\'t do that in DM\'s!');
 					  }
             break;
+					case 'hint':
 					case 'get':
 						if(message.channel.type != "dm"){
 					  	let bool =	chosenCommand.execute(message, args, guildsLatestImage[guild], FILECOLLECTION, keyvUsers);

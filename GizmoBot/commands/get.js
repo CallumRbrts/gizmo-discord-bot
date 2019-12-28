@@ -1,4 +1,3 @@
-const character = require('../objects/character.js');
 
 module.exports = {
   name: 'get',
