@@ -6,6 +6,7 @@ module.exports = {
       return message.channel.send('No character to give a hint about!');
     }
     let charName = FILECOLLECTION[guildImage];
+    //first letter from char name
     charName = charName.charAt(0).toUpperCase();
     message.channel.send('The first letter of the character\'s name is ' + charName);
   }

@@ -8,6 +8,9 @@ module.exports = {
     var res = "";
     if(args[1] == null){
       res = await keyvUsers.get(userID);
+      if(res.length==0){
+        return message.channel.send(message.author.toString()+' you do not have any characters to show!');
+      }
     }else{
       //cuts off the addon's that pinging someone adds
       let format = args[1].slice(2);
@@ -27,9 +30,7 @@ module.exports = {
         return message.channel.send(message.author.toString()+' this user hasn\'t captured anything yet');
       }
     }
-    if(res.length==0){
-      return message.channel.send(message.author.toString()+' you do not have any characters to show!');
-    }
+
     let msg = "";
     //gets targeted user for the command
     let currentUser = bot.users.get(userID);

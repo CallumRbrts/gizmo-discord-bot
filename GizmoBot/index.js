@@ -58,6 +58,7 @@ function fillCollection(){
 //delete the user table with my tag in the database -> cleanup
 //add the ability to select a character from the list of user chars and display information
 
+//find a way to speed up the select command
 
 bot.login(token);
 
