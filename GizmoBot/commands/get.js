@@ -13,7 +13,6 @@ module.exports = {
     }
     charName = charName.substring(0, charName.length - 1);
     if(FILECOLLECTION[guildImage] === charName){
-
       message.channel.send(message.author.toString() + ' has have successfully caught ' + charName);
       let results = new Array();
       let userID = message.member.user.id;

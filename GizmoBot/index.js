@@ -6,7 +6,7 @@ const Keyv = require('keyv');
 const keyvPrefixes = new Keyv('mysql://hart:Ilovemydog@localhost/gizmo');
 const keyvUsers = new Keyv('mysql://hart:Ilovemydog@localhost/gizmo');
 const dir = './images/characters';
-const VERSION = '1.2.6';
+const VERSION = '1.3.1';
 var {globalPrefix, token} = require('./config.json');
 var crypto = require('./functions/crypto.js');
 var imagePop = require('./functions/imagePop.js');
@@ -109,6 +109,7 @@ function commandSwitch(message, args, prefix, currImage, guild){
 							}
 						}
 						break;
+					case 'select':
 					case 'delc':
 					case 'lc':
 						chosenCommand.execute(message, args, keyvUsers, prefix, bot);
