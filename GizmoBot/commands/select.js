@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
-const imageDir = './images/characters/';
+var imageChange = require('../functions/imageChange.js');
+
 
 module.exports = {
   name: 'select',
@@ -39,15 +40,7 @@ module.exports = {
     let chosenChar = results[args[1]-1];
     //targeted user
     let currentUser = bot.users.get(userID);
-    //embedded message to be sent
-    let embed = new Discord.RichEmbed()
-      .setColor('#3880ba')
-      .setAuthor(currentUser.tag ,currentUser.avatarURL)
-      .setTitle('Character selection:')
-      .setDescription('**'+chosenChar.name+'**')
-      .attachFile(imageDir+chosenChar.imageURL)
-      .setFooter('Owned by: ' + currentUser.username)
-      .setImage('attachment://'+chosenChar.imageURL);
-    return message.channel.send(embed);
-  }
+    imageChange.showChar(message, args, results, currentUser, chosenChar);
+    }
+
 }

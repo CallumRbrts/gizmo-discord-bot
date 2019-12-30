@@ -59,6 +59,7 @@ function fillCollection(){
 //add the ability to select a character from the list of user chars and display information
 
 //find a way to speed up the select command
+//test the select and lc command with Oscar
 
 bot.login(token);
 
