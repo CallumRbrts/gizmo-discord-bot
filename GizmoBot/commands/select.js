@@ -13,6 +13,7 @@ module.exports = {
       return message.channel.send('Please specify a character position to view information. !select <number>');
     }
     if(args[2] == null){
+       //add check if args < 1
        results = await keyvUsers.get(userID);
        if(!results){
          return message.channel.send(author+' you do not have any characters to display');
@@ -33,14 +34,19 @@ module.exports = {
         return message.channel.send(author+' this user hasn\'t captured anything yet');
       }
     }
-
-    if(args[1] > results.length){
+    args[1] = Number(args[1]);
+    if(args[1] > results.length || isNaN(args[1]) || args[1] < 1){
       return message.channel.send(author + ' please specify a valid character position');
     }
-    let chosenChar = results[args[1]-1];
+    args[1] = args[1] - 1;
+    let chosenChar = results[args[1]];
     //targeted user
     let currentUser = bot.users.get(userID);
-    imageChange.showChar(message, args, results, currentUser, chosenChar);
+    let embed = new Discord.RichEmbed()
+      .setColor('#3880ba')
+      .setTitle('Character selection:');
+
+    return imageChange.showChar(message, args, results, currentUser, chosenChar, embed);
     }
 
 }
