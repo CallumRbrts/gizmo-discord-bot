@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 
 module.exports = {
   name: 'lc',
-  description: 'Lists characters',
+  description: 'Lists characters - !lc [@username]',
   async execute(message, args, keyvUsers, prefix, bot) {
     let userID = message.member.user.id;
     var res = "";
@@ -40,9 +40,10 @@ module.exports = {
       .setTitle('Your game characters:');
     //creates message for the embed field
     for(let i = 0; i < res.length; i++){
+      //need to change this as a field cannot exceed 256 characters
       msg += i+1 +'. **'+ res[i].name + '**\n';
     }
-    embed.addField("Sorted by : nothing rn",msg);
+    embed.addField("Sorted by : catch order",msg);
     return message.channel.send(embed);
   }
 }

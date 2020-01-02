@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 
 module.exports = {
   name: 'delc',
-  description: 'Delete a character from your character list',
+  description: 'Delete a character from your character list - !delc <position>',
   async execute(message, args, keyvUsers, prefix) {
     //gets id of message sender
     let userID = message.member.user.id;

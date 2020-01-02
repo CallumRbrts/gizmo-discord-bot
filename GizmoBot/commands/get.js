@@ -1,7 +1,7 @@
 
 module.exports = {
   name: 'get',
-  description: 'Guess the character that spawned',
+  description: 'Guess the character that spawned - !get <guess>',
   guildOnly: true,
   async execute(message, args, guildImage, FILECOLLECTION, keyvUsers){
     if(guildImage === ""){

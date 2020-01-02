@@ -6,13 +6,14 @@ const Keyv = require('keyv');
 const keyvPrefixes = new Keyv('mysql://hart:Ilovemydog@localhost/gizmo');
 const keyvUsers = new Keyv('mysql://hart:Ilovemydog@localhost/gizmo');
 const dir = './images/characters';
-const VERSION = '1.3.1';
+const VERSION = '1.3.3';
 var {globalPrefix, token} = require('./config.json');
 var crypto = require('./functions/crypto.js');
 var imagePop = require('./functions/imagePop.js');
 var CHANCE = 1; //0.09 is the optimal
 var NBFILES;
 var FILEDIRS = [];
+var COMMANDS = [];
 var FILECOLLECTION = {};
 var guildsLatestImage = {};
 var allGuilds = bot.guilds;
@@ -20,11 +21,13 @@ var guildTimers = {};
 
 keyvPrefixes.on('error', err => console.error('Keyv connection error:', err));
 keyvUsers.on('error', err => console.error('Keyv connection error:', err));
-
+let c = 0;
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
+	COMMANDS[c] = command;
 	bot.commands.set(command.name, command);
+	c++;
 }
 
 fs.readdir(dir, (err, files)=>{
@@ -91,6 +94,9 @@ function commandSwitch(message, args, prefix, currImage, guild){
         console.log(command + ' is being used!');
         //for commands with extra attributes needed in the prototypes or returning results are seperated
         switch(command){
+					case 'help':
+						chosenCommand.execute(message, COMMANDS, prefix);
+						break;
           case 'info':
             chosenCommand.execute(message, args, VERSION);
             break;
