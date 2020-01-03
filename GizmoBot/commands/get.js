@@ -14,11 +14,13 @@ module.exports = {
     charName = charName.substring(0, charName.length - 1);
     if(FILECOLLECTION[guildImage] === charName){
       message.channel.send(message.author.toString() + ' has have successfully caught ' + charName);
-      let results = new Array();
-      let userID = message.member.user.id;
+      let results = {};
+      let userID = message.member.user.id;let db = keyvUsers.get(message.member.user.id);
       results = await keyvUsers.get(userID);
       if(!results){
-        results = new Array();
+        results = {};
+        results["Characters"] = [];
+        results["Order"] = "order";
       }
       let today = new Date();
       let date = today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear();
@@ -30,7 +32,7 @@ module.exports = {
         dateCaptured:dateTime
       }
       console.log(obj.dateCaptured);
-      results.push(obj);
+      results["Characters"].push(obj);
       await keyvUsers.set(userID, results);
       console.log(results);
 

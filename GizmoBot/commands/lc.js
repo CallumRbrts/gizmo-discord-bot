@@ -3,12 +3,12 @@ const Discord = require('discord.js');
 module.exports = {
   name: 'lc',
   description: 'Lists characters - !lc [@username]',
-  async execute(message, args, keyvUsers, prefix, bot) {
+  async execute(message, args, keyvSort, keyvUsers, prefix, bot) {
     let userID = message.member.user.id;
     var res = "";
     if(args[1] == null){
       res = await keyvUsers.get(userID);
-      if(res.length==0){
+      if(!res){
         return message.channel.send(message.author.toString()+' you do not have any characters to show!');
       }
     }else{
@@ -32,6 +32,7 @@ module.exports = {
     }
 
     let msg = "";
+    res = res["Characters"];
     //gets targeted user for the command
     let currentUser = bot.users.get(userID);
     let embed = new Discord.RichEmbed()

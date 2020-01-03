@@ -16,19 +16,21 @@ module.exports = {
       if(!res){
         return message.channel.send(message.author.toString() + ' you have no characters to delete!');
       }
-      if(args[1]-1 > res.size){
+      let list = res["Characters"];
+      if(args[1]-1 > list.size){
         return message.channel.send(message.author.toString() + ' you need to chose a valid character to delete');
       }else{
         //shifts index because the user choses a character from a display list starting at 1
         let index = args[1]-1;
         //use splice to delete the specified argument from list and place it in a new array
-        let del = res.splice(index, 1);
+        let del = list.splice(index, 1);
         message.channel.send(message.author.toString() + ' are you sure you want to delete ' + del[0].name+'? !accept or !deny');
         //waits 10 seconds for users answer
         const collector = new Discord.MessageCollector(message.channel, m => m.author.id === message.author.id, {time:10000});
         collector.on('collect', async function(message){
           if(message.content.toLowerCase() == prefix+"accept"){
             //sets the new deleted list
+            res["Characters"] = list;
             await keyvUsers.set(userID, res);
             console.log(res);
             return message.channel.send('Character successfully deleted '+del[0].name+'!');

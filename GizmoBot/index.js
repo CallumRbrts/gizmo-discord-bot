@@ -5,8 +5,9 @@ const fs = require('fs');
 const Keyv = require('keyv');
 const keyvPrefixes = new Keyv('mysql://hart:Ilovemydog@localhost/gizmo');
 const keyvUsers = new Keyv('mysql://hart:Ilovemydog@localhost/gizmo');
+const keyvSort = new Keyv('mysql://hart:Ilovemydog@localhost/gizmo');
 const dir = './images/characters';
-const VERSION = '1.3.3';
+const VERSION = '2.1.1';
 var {globalPrefix, token} = require('./config.json');
 var crypto = require('./functions/crypto.js');
 var imagePop = require('./functions/imagePop.js');
@@ -117,10 +118,15 @@ function commandSwitch(message, args, prefix, currImage, guild){
 							}
 						}
 						break;
+					case 'sort':
+						chosenCommand.execute(message, args, keyvSort);
+						break;
 					case 'select':
 					case 'delc':
-					case 'lc':
 						chosenCommand.execute(message, args, keyvUsers, prefix, bot);
+						break;
+					case 'lc':
+						chosenCommand.execute(message, args, keyvSort, keyvUsers, prefix, bot);
 						break;
           default:
             chosenCommand.execute(message, args);

@@ -18,6 +18,7 @@ module.exports = {
        if(!results){
          return message.channel.send(author+' you do not have any characters to display');
        }
+       results = results["Characters"];
     }else{
       let format = args[2].slice(2);
       format = format.slice(prefix.length);
@@ -33,6 +34,7 @@ module.exports = {
       if(!results){
         return message.channel.send(author+' this user hasn\'t captured anything yet');
       }
+      results = results["Characters"];
     }
     args[1] = Number(args[1]);
     if(args[1] > results.length || isNaN(args[1]) || args[1] < 1){
