@@ -20,7 +20,7 @@ module.exports = {
       if(!results){
         results = {};
         results["Characters"] = [];
-        results["Order"] = "order";
+        results["Order"] = "default";
       }
       let today = new Date();
       let date = today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear();

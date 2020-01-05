@@ -1,4 +1,5 @@
 const Discord = require('discord.js');
+const sortMode = require('../functions/sortMode.js');
 
 module.exports = {
   name: 'lc',
@@ -32,7 +33,9 @@ module.exports = {
     }
 
     let msg = "";
-    res = res["Characters"];
+    let sort = res["Order"];
+    //specify the character list
+    let chars = res["Characters"];
     //gets targeted user for the command
     let currentUser = bot.users.get(userID);
     let embed = new Discord.RichEmbed()
@@ -40,11 +43,25 @@ module.exports = {
       .setAuthor(currentUser.tag ,currentUser.avatarURL)
       .setTitle('Your game characters:');
     //creates message for the embed field
-    for(let i = 0; i < res.length; i++){
-      //need to change this as a field cannot exceed 256 characters
-      msg += i+1 +'. **'+ res[i].name + '**\n';
+
+    if(!sort){
+      chars = sortMode.default(chars);
+    }else{
+      switch (sort) {
+        case 'default':
+          break;
+        case 'alphabetical':
+          chars = sortMode.alphabetical(chars);
+          break;
+        case 'date':
+          chars = sortMode.date(chars);
+          break;
+      }
     }
-    embed.addField("Sorted by : catch order",msg);
+    res["Characters"] = chars;
+    await keyvUsers.set(userID, res);
+    msg = sortMode.createMsg(chars);
+    embed.addField("Sorted by: " + sort.charAt(0).toUpperCase()+sort.slice(1),msg);
     return message.channel.send(embed);
   }
 }

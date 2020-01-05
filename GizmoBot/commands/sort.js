@@ -18,13 +18,13 @@ module.exports = {
       case 'alphabetical':
       case 'date':
       case 'power':
-      case 'order':
+      case 'default':
         results["Order"] = args[1];
         await keyvSort.set(userID, results);
         return message.channel.send(author + ' The sorting method has successfully been changed to \"' + args[1]+ '\"');
         break;
       default:
-        return message.channel.send('This sorting method doesn\'t exist - !sort <alphabetical | date | order | power>');
+        return message.channel.send('This sorting method doesn\'t exist - !sort <alphabetical | date | default | power>');
     }
   }
 }
