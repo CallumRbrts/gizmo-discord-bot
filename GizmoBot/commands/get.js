@@ -20,7 +20,7 @@ module.exports = {
       if(!results){
         results = {};
         results["Characters"] = [];
-        results["Order"] = "default";
+        results["Order"] = ["default", false];
       }
       let today = new Date();
       let date = today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear();
@@ -29,9 +29,9 @@ module.exports = {
       let obj = {
         name:charName,
         imageURL:guildImage,
-        dateCaptured:dateTime
+        dateCaptured:dateTime,
+        captureOrder:results["Characters"].length + 1
       }
-      console.log(obj.dateCaptured);
       results["Characters"].push(obj);
       await keyvUsers.set(userID, results);
       console.log(results);

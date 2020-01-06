@@ -47,21 +47,22 @@ module.exports = {
     if(!sort){
       chars = sortMode.default(chars);
     }else{
-      switch (sort) {
+      switch (sort[0]) {
         case 'default':
+          chars = sortMode.default(chars, sort[1]);
           break;
         case 'alphabetical':
-          chars = sortMode.alphabetical(chars);
+          chars = sortMode.alphabetical(chars, sort[1]);
           break;
         case 'date':
-          chars = sortMode.date(chars);
+          chars = sortMode.date(chars, sort[1]);
           break;
       }
     }
     res["Characters"] = chars;
     await keyvUsers.set(userID, res);
     msg = sortMode.createMsg(chars);
-    embed.addField("Sorted by: " + sort.charAt(0).toUpperCase()+sort.slice(1),msg);
+    embed.addField("Sorted by: " + sort[0].charAt(0).toUpperCase()+sort[0].slice(1),msg);
     return message.channel.send(embed);
   }
 }

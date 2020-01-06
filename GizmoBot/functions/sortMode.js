@@ -1,10 +1,18 @@
 module.exports = {
-  alphabetical: function (results){
-    results.sort(function(a, b){
-      if(a.name < b.name) { return -1; }
-      if(a.name > b.name) { return 1; }
-      return 0;
-    });
+  alphabetical: function (results, reverse){
+    if(reverse){
+      results.sort(function(a, b){
+        if(a.name > b.name) { return -1; }
+        if(a.name < b.name) { return 1; }
+        return 0;
+      });
+    }else{
+      results.sort(function(a, b){
+        if(a.name < b.name) { return -1; }
+        if(a.name > b.name) { return 1; }
+        return 0;
+      });
+    }
     return results;
   },
   createMsg: function (results){
@@ -15,11 +23,26 @@ module.exports = {
     }
     return msg;
   },
-  date: function (results){
-    results.sort(function(a,b){
-      console.log(new Date(b.dateCaptured));
-      return new Date(b.dateCaptured) - new Date(a.dateCaptured);
-    });
+  date: function (results, reverse){
+    if(reverse){
+      results.sort(function(a,b){
+        return new Date(a.dateCaptured) - new Date(b.dateCaptured);
+      });
+    }else{
+      results.sort(function(a,b){
+        return new Date(b.dateCaptured) - new Date(a.dateCaptured);
+      });
+    }
+    return results;
+  },
+  default: function(results, reverse){
+    if(reverse){
+      results.sort(function(a,b){return b.captureOrder-a.captureOrder;});
+    }else{
+      results.sort(function(a,b){return a.captureOrder-b.captureOrder;});
+    }
     return results;
   }
+  //sort by initial order
+  //sort by level
 }
