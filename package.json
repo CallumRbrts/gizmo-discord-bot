@@ -1,0 +1,23 @@
+{
+  "name": "gizmo-discord-bot",
+  "version": "1.0.0",
+  "description": "Multipurpose Discord Bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CallumRbrts/gizmo-discord-bot.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CallumRbrts/gizmo-discord-bot/issues"
+  },
+  "homepage": "https://github.com/CallumRbrts/gizmo-discord-bot#readme",
+  "dependencies": {
+    "fs-readdir-recursive": "^1.1.0"
+  }
+}

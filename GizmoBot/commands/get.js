@@ -3,7 +3,7 @@ module.exports = {
   name: 'get',
   description: 'Guess the character that spawned - !get <guess>',
   guildOnly: true,
-  async execute(message, args, guildImage, FILECOLLECTION, keyvUsers){
+  async execute(message, args, guildImage, FILECOLLECTION, keyvUsers, CHARCOLLECTION){
     if(guildImage === ""){
      return message.channel.send('A character hasn\'t spawned yet');
     }else{
@@ -26,15 +26,15 @@ module.exports = {
       let date = today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear();
       let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
       let dateTime = date+' '+time;
-      let obj = {
-        name:charName,
-        imageURL:guildImage,
-        dateCaptured:dateTime,
-        captureOrder:results["Characters"].length + 1
-      }
+      //char constructor
+      var obj = new Object();
+      obj = CHARCOLLECTION[charName];
+      obj.imageURL = guildImage;
+      obj.dateCaptured = dateTime;
+      obj.captureOrder = results["Characters"].length + 1;
+
       results["Characters"].push(obj);
       await keyvUsers.set(userID, results);
-      console.log(results);
 
       // list = await keyvUsers.get(userID);
       // message.channel.send('List of '+userID+'\'s chars: \n' + list);

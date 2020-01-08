@@ -11,11 +11,14 @@ const VERSION = '2.1.1';
 var {globalPrefix, token} = require('./config.json');
 var crypto = require('./functions/crypto.js');
 var imagePop = require('./functions/imagePop.js');
+var factory = require('./functions/factory.js');
+var read = require('fs-readdir-recursive');
 var CHANCE = 1; //0.09 is the optimal
-var NBFILES;
-var FILEDIRS = [];
+var NBFILES = 0;
+var FILEDIRS = {};
 var COMMANDS = [];
 var FILECOLLECTION = {};
+var CHARCOLLECTION = {};
 var guildsLatestImage = {};
 var allGuilds = bot.guilds;
 var guildTimers = {};
@@ -30,51 +33,58 @@ for (const file of commandFiles) {
 	bot.commands.set(command.name, command);
 	c++;
 }
+//change this to read every folder in the folder
+//and give the FILECOLLECTION an array with the name and the rarity
+//modify image pop to implement this
 
-fs.readdir(dir, (err, files)=>{
-  NBFILES = files.length;
-  console.log('There are ' + NBFILES + ' file(s) in ' + dir);
-  FILEDIRS = files.map(function(files){
-    return files;
-  });
-  console.log(FILEDIRS);
-});
+// fs.readdir(dir, (err, files)=>{
+//   NBFILES = files.length;
+//   console.log('There are ' + NBFILES + ' file(s) in ' + dir);
+//   FILEDIRS = files.map(function(files){
+//     return files;
+//   });
+// 	console.log(FILEDIRS);
+// });
 
 function fillCollection(){
 	for(const file of FILEDIRS){
-		let h = file.split('.');
+		//remove dirs if any
+		let l = file.split('/');
+		let size = l.length - 1;
+		let h = l[size].split('.');
 		let j = "";
+		//fabric funtion will have a collection with key: name, value: obj. And also a function(name) and searches the collection for the name and return an object
 		for(let i = 0; i < h.length - 1; i++){
 			j += h[i].charAt(0).toUpperCase() + h[i].slice(1).toLowerCase() + " ";
 		}
 		j = j.substring(0, j.length - 1);
+		//fabric function here .search
+		//new collection -> key: name, value: obj{name, rarity, imagelink}
 		FILECOLLECTION[file] = j;
 	}
 }
 
-//optimize the prefix again using Keyv in conjunction with allGuilds.tap();
-//Create a hint command that allows the user to get the first letter if that chars name
 //encrypt data that's saved in the database
 //xp system for each char
 //music bot = YT and Spotify capabilities
 //set limit to amount of chars on one single embed and seperate them into pages and allow page change through reactions
-//add the ability to sort the list of captured characters
-//delete the user table with my tag in the database -> cleanup
-//add the ability to select a character from the list of user chars and display information
-
-//find a way to speed up the select command
-//test the select and lc command with Oscar
 
 bot.login(token);
 
 bot.on('ready', () => {
   console.log('This bot is online!');
+	FILEDIRS = read(dir);
+	NBFILES = FILEDIRS.length;
 	fillCollection();
+	// var filfafdsd = read(dir);
+	// console.log(filfafdsd);
 	console.log(FILECOLLECTION);
     allGuilds.tap(function(guild){
 			guildsLatestImage[guild.id] = "";
     });
 	console.log(guildsLatestImage);
+	CHARCOLLECTION = factory.create();
+	console.log("Character Collection is ready");
 	bot.user.setPresence({
 		status: "online",
 		game: {
@@ -111,7 +121,7 @@ function commandSwitch(message, args, prefix, currImage, guild){
 					case 'hint':
 					case 'get':
 						if(message.channel.type != "dm"){
-					  	let bool =	chosenCommand.execute(message, args, guildsLatestImage[guild], FILECOLLECTION, keyvUsers);
+					  	let bool =	chosenCommand.execute(message, args, guildsLatestImage[guild], FILECOLLECTION, keyvUsers, CHARCOLLECTION);
 							if(bool){
 								guildsLatestImage[guild] = "";
 								clearTimeout(guildTimers[guild]);

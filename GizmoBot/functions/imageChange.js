@@ -9,11 +9,14 @@ module.exports = {
   showChar: async function showChar(message, args, results, currentUser, chosenChar, embed){
     //embedded message to be sent
 
+
     embed.setAuthor(currentUser.tag ,currentUser.avatarURL);
-    embed.setDescription('**'+chosenChar.name+'**');
+    embed.setDescription('**'+chosenChar.name+'**\n'+ "**Rarity: **" + chosenChar.rarity);
+    //embed.addField("**Rarity: **" + chosenChar.rarity, true);
     embed.setFooter('Owned by: ' + currentUser.username + '\t \t \t' + (args[1]+1) + '/' + results.length);
-    embed.attachFile(imageDir+chosenChar.imageURL)
-    embed.setImage('attachment://'+chosenChar.imageURL);
+    embed.attachFile(imageDir+chosenChar.imageURL);
+    let attach = chosenChar.imageURL.split("/");
+    embed.setImage('attachment://'+attach[attach.length -1]);
 
     message.channel.send(embed)
       .then(async sent => {
