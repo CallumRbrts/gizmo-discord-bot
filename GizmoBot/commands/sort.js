@@ -1,17 +1,19 @@
+const sortMode = require('../functions/sortMode.js');
+
 module.exports = {
   name: 'sort',
   description: 'Allows to choose a sorting option for the !lc command',
-  async execute(message, args, keyvSort) {
+  async execute(message, args, key) {
     let author = message.author.toString();
     let userID = message.member.user.id;
-    let results = await keyvSort.get(userID);
+    let results = await key.get(userID);
     console.log(results);
-    if(!results){
+    if(!results || !results["Characters"]){
       return message.channel.send(author + ' you have no list to sort');
     }
     if(args[1] == null){
       console.log(results);
-      return message.channel.send(author + ' your current sorting method is \"' + results.Order+ '\"');
+      return message.channel.send(author + ' your current sorting method is \"' + results.Order[0]+ '\"');
     }
     let order = [];
     args[1] = args[1].toLowerCase();
@@ -33,7 +35,20 @@ module.exports = {
           order.push(false);
         }
         results["Order"] = order;
-        await keyvSort.set(userID, results);
+        let chars = results["Characters"];
+        switch (order[0]) {
+          case 'default':
+            chars = sortMode.default(chars, order[1]);
+            break;
+          case 'alphabetical':
+            chars = sortMode.alphabetical(chars, order[1]);
+            break;
+          case 'date':
+            chars = sortMode.date(chars, order[1]);
+            break;
+        }
+        results["Characters"] = chars;
+        await key.set(userID, results);
         if(order[1] == true){
           return message.channel.send(author + ' The sorting method has successfully been changed to \"' + args[1]+ '\" in descending order');
         }else{

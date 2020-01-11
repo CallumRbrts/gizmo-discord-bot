@@ -4,7 +4,7 @@ const sortMode = require('../functions/sortMode.js');
 module.exports = {
   name: 'lc',
   description: 'Lists characters - !lc [@username]',
-  async execute(message, args, keyvSort, keyvUsers, prefix, bot) {
+  async execute(message, args, keyvUsers, prefix, bot) {
     let userID = message.member.user.id;
     var res = "";
     if(args[1] == null){
@@ -44,23 +44,6 @@ module.exports = {
       .setTitle('Your game characters:');
     //creates message for the embed field
 
-    if(!sort){
-      chars = sortMode.default(chars);
-    }else{
-      switch (sort[0]) {
-        case 'default':
-          chars = sortMode.default(chars, sort[1]);
-          break;
-        case 'alphabetical':
-          chars = sortMode.alphabetical(chars, sort[1]);
-          break;
-        case 'date':
-          chars = sortMode.date(chars, sort[1]);
-          break;
-      }
-    }
-    res["Characters"] = chars;
-    await keyvUsers.set(userID, res);
     msg = sortMode.createMsg(chars);
     embed.addField("Sorted by: " + sort[0].charAt(0).toUpperCase()+sort[0].slice(1),msg);
     return message.channel.send(embed);

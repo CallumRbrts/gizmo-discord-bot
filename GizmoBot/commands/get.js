@@ -1,3 +1,6 @@
+var uniqid = require('uniqid');
+const sortMode = require('../functions/sortMode.js');
+
 
 module.exports = {
   name: 'get',
@@ -32,9 +35,31 @@ module.exports = {
       obj.imageURL = guildImage;
       obj.dateCaptured = dateTime;
       obj.captureOrder = results["Characters"].length + 1;
+      obj.id = uniqid();
 
       results["Characters"].push(obj);
+      let order = results["Order"];
+      //sort
+      let chars = results["Characters"];
+      if(!order){
+        chars = sortMode.default(chars);
+      }else{
+        switch (order[0]) {
+          case 'default':
+            chars = sortMode.default(chars, order[1]);
+            break;
+          case 'alphabetical':
+            chars = sortMode.alphabetical(chars, order[1]);
+            break;
+          case 'date':
+            chars = sortMode.date(chars, order[1]);
+            break;
+        }
+      }
+      results["Characters"] = chars;
+
       await keyvUsers.set(userID, results);
+      //sort here
 
       // list = await keyvUsers.get(userID);
       // message.channel.send('List of '+userID+'\'s chars: \n' + list);

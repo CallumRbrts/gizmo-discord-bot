@@ -8,7 +8,6 @@ const VERSION = '2.1.1';
 var {globalPrefix, token, sql} = require('./config.json');
 const keyvPrefixes = new Keyv(sql);
 const keyvUsers = new Keyv(sql);
-const keyvSort = new Keyv(sql);
 var crypto = require('./functions/crypto.js');
 var imagePop = require('./functions/imagePop.js');
 var factory = require('./functions/factory.js');
@@ -128,15 +127,12 @@ function commandSwitch(message, args, prefix, currImage, guild){
 							}
 						}
 						break;
+					case 'cc':
 					case 'sort':
-						chosenCommand.execute(message, args, keyvSort);
-						break;
 					case 'select':
 					case 'delc':
-						chosenCommand.execute(message, args, keyvUsers, prefix, bot);
-						break;
 					case 'lc':
-						chosenCommand.execute(message, args, keyvSort, keyvUsers, prefix, bot);
+						chosenCommand.execute(message, args, keyvUsers, prefix, bot);
 						break;
           default:
             chosenCommand.execute(message, args);

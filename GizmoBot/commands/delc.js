@@ -18,7 +18,7 @@ module.exports = {
       }
       let list = res["Characters"];
       if(args[1]-1 > list.size){
-        return message.channel.send(message.author.toString() + ' you need to chose a valid character to delete');
+        return message.channel.send(message.author.toString() + ' you need to choose a valid character to delete');
       }else{
         //shifts index because the user choses a character from a display list starting at 1
         let index = args[1]-1;
@@ -29,6 +29,9 @@ module.exports = {
         const collector = new Discord.MessageCollector(message.channel, m => m.author.id === message.author.id, {time:10000});
         collector.on('collect', async function(message){
           if(message.content.toLowerCase() == prefix+"accept"){
+            if(res["ChosenCharacter"].id === del[0].id){
+              res["ChosenCharacter"] = null;
+            }
             //sets the new deleted list
             res["Characters"] = list;
             await keyvUsers.set(userID, res);
