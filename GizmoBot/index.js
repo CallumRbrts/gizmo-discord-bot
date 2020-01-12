@@ -122,7 +122,8 @@ function commandSwitch(message, args, prefix, currImage, guild){
 					case 'get':
 						if(message.channel.type != "dm"){
 					  	let bool =	chosenCommand.execute(message, args, guildsLatestImage[guild], FILECOLLECTION, keyvUsers, CHARCOLLECTION);
-							if(bool){
+							if(bool === true){
+								console.log("Guessed!");
 								guildsLatestImage[guild] = "";
 								clearTimeout(guildTimers[guild]);
 							}
@@ -207,7 +208,7 @@ bot.on('message', async message=>{
 					if(guildsLatestImage[guildID]!= ""){
 					guildsLatestImage[guildID] = "";
 					}
-				}, 10000);
+				}, 20000);
 				guildTimers[guildID] = timer;
 				console.log(guildsLatestImage);
 				return;

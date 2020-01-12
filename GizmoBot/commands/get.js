@@ -58,10 +58,6 @@ module.exports = {
       results["Characters"] = chars;
 
       await keyvUsers.set(userID, results);
-      //sort here
-
-      // list = await keyvUsers.get(userID);
-      // message.channel.send('List of '+userID+'\'s chars: \n' + list);
       return true;
     }else{
       message.channel.send('Wrong Answer!');

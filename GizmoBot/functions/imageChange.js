@@ -20,7 +20,7 @@ module.exports = {
 
     message.channel.send(embed)
       .then(async sent => {
-        //react to th message
+        //react to the message
         await sent.react("◀️")
         await sent.react("▶️")
         //create a filter for the left and right collector
