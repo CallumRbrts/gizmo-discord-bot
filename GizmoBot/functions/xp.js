@@ -12,7 +12,7 @@ module.exports = {
     currentXP += 20;
     if(currentXP >= xpTable[currentLevel]){
       currentLevel += 1;
-      message.channel.send('Congratulations, your ' + name + ' is now level ' + currentLevel);
+      message.channel.send('Congratulations, your ' + currentName + ' is now level ' + currentLevel);
       return [currentXP, currentLevel];
     }
     return [currentXP, currentLevel];

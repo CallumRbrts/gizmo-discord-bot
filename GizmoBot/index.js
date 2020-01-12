@@ -164,7 +164,6 @@ async function gainxp(message){
 			results["Characters"][i].xp = newStats[0];
 			results["Characters"][i].level = newStats[1];
 			await keyvUsers.set(userID, results);
-			console.log(results);
 			return;
 		}
 	}
