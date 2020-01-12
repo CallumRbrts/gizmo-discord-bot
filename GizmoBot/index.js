@@ -9,6 +9,7 @@ var {globalPrefix, token, sql} = require('./config.json');
 const keyvPrefixes = new Keyv(sql);
 const keyvUsers = new Keyv(sql);
 var crypto = require('./functions/crypto.js');
+var xp = require('./functions/xp.js');
 var imagePop = require('./functions/imagePop.js');
 var factory = require('./functions/factory.js');
 var read = require('fs-readdir-recursive');
@@ -151,6 +152,24 @@ function commandSwitch(message, args, prefix, currImage, guild){
 	}
 }
 
+async function gainxp(message){
+	let userID = message.member.user.id;
+	let results = await keyvUsers.get(userID);
+	if(!results || !results["ChosenCharacter"]){
+		return;
+	}
+	for(let i = 0; i < results["Characters"].length; i++ ){
+		if(results["Characters"][i].id === results["ChosenCharacter"].id){
+			let newStats = xp.gain(message, results["Characters"][i]);
+			results["Characters"][i].xp = newStats[0];
+			results["Characters"][i].level = newStats[1];
+			await keyvUsers.set(userID, results);
+			console.log(results);
+			return;
+		}
+	}
+}
+
 bot.on('message', async message=>{
   if(message.author.bot){
     return;
@@ -164,18 +183,20 @@ bot.on('message', async message=>{
 		let guildID = message.guild.id;
 		//if we don't have the guild prefix stored
 		if(!await keyvPrefixes.get(guildID)){
+			gainxp(message);
 			guildPrefix = globalPrefix;
 			args = message.content.substring(guildPrefix.length).split(/\s+/);
 		  commandSwitch(message, args, guildPrefix, currImage, guildID);
 			return;
 		} else {
-			//get the guild prefix
+			//get the guild prefixChosenCharacter
 			guildPrefix = await keyvPrefixes.get(guildID);
 			if(message.content.startsWith(guildPrefix)){
 				args = message.content.substring(guildPrefix.length).split(/\s+/);
 				commandSwitch(message, args, guildPrefix, currImage, guildID);
 			} else {
 				//if guild message but no prefix
+				gainxp(message);
 			  let currImage = imagePop.spawnImage(message, guildPrefix, CHANCE, FILEDIRS, NBFILES, dir);
 				guildsLatestImage[guildID] = currImage;
 				if(guildsLatestImage[guildID] != ""){

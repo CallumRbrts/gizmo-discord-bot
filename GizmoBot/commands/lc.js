@@ -7,6 +7,13 @@ module.exports = {
   async execute(message, args, keyvUsers, prefix, bot) {
     let userID = message.member.user.id;
     var res = "";
+    let a = {};
+    let b = {};
+    b["yee"] = 2;
+
+    a["yeet"] = b;
+    a["skeet"] = b;
+    console.log(a);
     if(args[1] == null){
       res = await keyvUsers.get(userID);
       if(!res){
@@ -36,6 +43,7 @@ module.exports = {
     let sort = res["Order"];
     //specify the character list
     let chars = res["Characters"];
+    console.log(chars);
     //gets targeted user for the command
     let currentUser = bot.users.get(userID);
     let embed = new Discord.RichEmbed()

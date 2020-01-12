@@ -29,8 +29,12 @@ module.exports = {
         const collector = new Discord.MessageCollector(message.channel, m => m.author.id === message.author.id, {time:10000});
         collector.on('collect', async function(message){
           if(message.content.toLowerCase() == prefix+"accept"){
-            if(res["ChosenCharacter"].id === del[0].id){
-              res["ChosenCharacter"] = null;
+            if(!res["ChosenCharacter"]){
+              
+            }else{
+              if(res["ChosenCharacter"].id === del[0].id){
+                res["ChosenCharacter"] = null;
+              }
             }
             //sets the new deleted list
             res["Characters"] = list;

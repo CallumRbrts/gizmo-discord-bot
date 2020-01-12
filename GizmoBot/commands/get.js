@@ -1,7 +1,6 @@
 var uniqid = require('uniqid');
 const sortMode = require('../functions/sortMode.js');
 
-
 module.exports = {
   name: 'get',
   description: 'Guess the character that spawned - !get <guess>',
@@ -18,7 +17,7 @@ module.exports = {
     if(FILECOLLECTION[guildImage] === charName){
       message.channel.send(message.author.toString() + ' has have successfully caught ' + charName);
       let results = {};
-      let userID = message.member.user.id;let db = keyvUsers.get(message.member.user.id);
+      let userID = message.member.user.id;
       results = await keyvUsers.get(userID);
       if(!results){
         results = {};
