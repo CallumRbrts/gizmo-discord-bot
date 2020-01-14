@@ -11,7 +11,7 @@ module.exports = {
 
 
     embed.setAuthor(currentUser.tag ,currentUser.avatarURL);
-    embed.setDescription('**'+chosenChar.name+'**\n'+ "**Rarity: **" + chosenChar.rarity);
+    embed.setDescription('**'+chosenChar.name+'**\n'+ '**Rarity: **' + chosenChar.rarity +'\n **Level: **'+ chosenChar.level + '\n**XP: **' + chosenChar.xp +'\n **Attack: **' + chosenChar.attack);
     //embed.addField("**Rarity: **" + chosenChar.rarity, true);
     embed.setFooter('Owned by: ' + currentUser.username + '\t \t \t' + (args[1]+1) + '/' + results.length);
     embed.attachFile(imageDir+chosenChar.imageURL);

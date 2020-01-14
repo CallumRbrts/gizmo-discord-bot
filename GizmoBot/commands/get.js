@@ -1,5 +1,5 @@
-var uniqid = require('uniqid');
 const sortMode = require('../functions/sortMode.js');
+const factory = require('../functions/factory.js');
 
 module.exports = {
   name: 'get',
@@ -24,18 +24,9 @@ module.exports = {
         results["Characters"] = [];
         results["Order"] = ["default", false];
       }
-      let today = new Date();
-      let date = today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear();
-      let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-      let dateTime = date+' '+time;
-      //char constructor
-      var obj = new Object();
-      obj = CHARCOLLECTION[charName];
-      obj.imageURL = guildImage;
-      obj.dateCaptured = dateTime;
-      obj.captureOrder = results["Characters"].length + 1;
-      obj.id = uniqid();
 
+      var obj = factory.createObject(results["Characters"].length, CHARCOLLECTION, charName, guildImage);
+      console.log(obj);
       results["Characters"].push(obj);
       let order = results["Order"];
       //sort

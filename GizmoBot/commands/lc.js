@@ -36,7 +36,6 @@ module.exports = {
     let sort = res["Order"];
     //specify the character list
     let chars = res["Characters"];
-    console.log(chars);
     //gets targeted user for the command
     let currentUser = bot.users.get(userID);
     let embed = new Discord.RichEmbed()
