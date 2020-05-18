@@ -9,7 +9,8 @@ module.exports = {
     var res = "";
     if(args[1] == null){
       res = await keyvUsers.get(userID);
-      if(!res){
+      //if db doesn't exist or if number of characters is 0
+      if(!res || res["Characters"].length <= 0){
         return message.channel.send(message.author.toString()+' you do not have any characters to show!');
       }
     }else{

@@ -39,6 +39,9 @@ module.exports = {
         break;
     }
     character.attack = Math.floor(Math.random() * (max - min + 1) +min);
+    character.defence = Math.floor(Math.random() * (max - min + 1) +min);
+    character.speed = Math.floor(Math.random() * (max - min + 1) +min);
+    character.luck = Math.floor(Math.random() * (max - min + 1) +min);
     return character;
   },
   createObject: function(length, CHARCOLLECTION, charName, guildImage){

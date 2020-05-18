@@ -160,7 +160,7 @@ async function gainxp(message){
 		return;
 	}
 	for(let i = 0; i < results["Characters"].length; i++ ){
-		if(results["Characters"][i].id === results["ChosenCharacter"].id){
+		if(results["Characters"][i].id === results["ChosenCharacter"]){
 			let newStats = xp.gain(message, results["Characters"][i]);
 			results["Characters"][i].xp = newStats[0];
 			results["Characters"][i].level = newStats[1];
