@@ -19,7 +19,7 @@ module.exports = {
     console.log(FILEDIRS);
   	//chance to send a random image of a game character
   	if(pop < CHANCE){
-
+      //rarity system here
   	 let imageNumber = Math.floor (Math.random() * (NBFILES - 1 + 1));
   		let name = FILEDIRS[imageNumber].substring(0, FILEDIRS[imageNumber].indexOf('.'));
   		name = name.charAt(0).toUpperCase() + name.slice(1);

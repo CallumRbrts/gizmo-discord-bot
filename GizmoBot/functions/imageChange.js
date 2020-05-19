@@ -7,12 +7,12 @@ const imageDir = './images/characters/';
 
 //change image without destroying embed -> try attaching every image file to the embed and edit between them -> to test
 //update embed to look more consistent -> maybe add some variables on the same line -> also try and make things float to the right
+
 module.exports = {
   showChar: async function showChar(message, args, results, currentUser, chosenChar, embed){
     //embedded message to be sent
-
     embed.setAuthor(currentUser.tag ,currentUser.avatarURL);
-    embed.setDescription('**'+chosenChar.name+'**\n'+ '**Rarity: **' + chosenChar.rarity +'\n **Level: **'+ chosenChar.level + '\n **XP: **' + chosenChar.xp +'\n **Attack: **' + chosenChar.attack);
+    embed.setDescription('**'+chosenChar.name+'** \u200b \u200b \u200b \u200b \u200b \u200b  \u200b \u200b \u200b \u200b \u200b \u200b \u200b \u200b \u200b \u200b \u200b \u200b **Level: **'+ chosenChar.level + '\n **Rarity: **' + chosenChar.rarity + '\n **XP: **' + chosenChar.xp +'\n **Attack: **' + chosenChar.attack +'\n **Defence: **' + chosenChar.defence + '\n **Luck: **' + chosenChar.luck + '\n **Speed: **' + chosenChar.speed);
     //embed.addField("**Rarity: **" + chosenChar.rarity, true);
     embed.setFooter('Owned by: ' + currentUser.username + '\t \t \t' + (args[1]+1) + '/' + results.length);
     embed.attachFile(imageDir+chosenChar.imageURL);

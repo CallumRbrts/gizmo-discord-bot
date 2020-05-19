@@ -24,7 +24,6 @@ module.exports = {
         results["Characters"] = [];
         results["Order"] = ["default", false];
       }
-
       var obj = factory.createObject(results["Characters"].length, CHARCOLLECTION, charName, guildImage);
       console.log(obj);
       results["Characters"].push(obj);
@@ -47,7 +46,6 @@ module.exports = {
         }
       }
       results["Characters"] = chars;
-
       await keyvUsers.set(userID, results);
       return true;
     }else{

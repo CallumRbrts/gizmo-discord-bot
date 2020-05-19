@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const bot = new Discord.Client();
+//{ ws: {intents: ['GUILDS','GUILD_MESSAGES', 'DIRECT_MESSAGES', 'DIRECT_MESSAGE_REACTIONS', 'GUILD_MESSAGE_REACTIONS', 'GUILD_PRESENCES', 'GUILD_MEMBERS']}}
 bot.commands = new Discord.Collection();
 const fs = require('fs');
 const Keyv = require('keyv');
@@ -72,7 +73,7 @@ function fillCollection(){
 bot.login(token);
 
 bot.on('ready', () => {
-  console.log('This bot is online!');
+  console.log('This bot is getting ready!');
 	FILEDIRS = read(dir);
 	NBFILES = FILEDIRS.length;
 	fillCollection();
@@ -82,9 +83,13 @@ bot.on('ready', () => {
     allGuilds.tap(function(guild){
 			guildsLatestImage[guild.id] = "";
     });
+	console.log('Preparing Guilds!');
 	console.log(guildsLatestImage);
+
+	console.log("Creating Character Collection!");
 	CHARCOLLECTION = factory.create();
-	console.log("Character Collection is ready");
+	//console.log(CHARCOLLECTION);
+	console.log('Gizmo is ready!');
 	bot.user.setPresence({
 		status: "online",
 		game: {
